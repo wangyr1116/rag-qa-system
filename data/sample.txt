@@ -1,0 +1,11 @@
+Transformer is a neural network architecture that is widely used in large language models. It relies on self-attention instead of recurrent computation. Self-attention allows each token to consider other tokens in the same sequence and calculate which information is most relevant.
+
+RNN processes tokens one by one. This sequential computation makes it difficult to parallelize training. When the input sequence is long, RNN may also struggle to preserve information from earlier tokens. LSTM and GRU were designed to reduce some of these limitations, but they still process sequences step by step.
+
+Transformer can process many tokens in parallel during training. Positional encoding is used because self-attention alone does not know the original order of tokens. Multi-head attention lets the model learn different relationships between tokens at the same time.
+
+Large language models are commonly based on decoder-only Transformer architectures. They predict the next token based on previous tokens. Examples include GPT, LLaMA, and Qwen. The quality of a model depends on its architecture, training data, training process, and inference settings.
+
+RAG means Retrieval-Augmented Generation. A RAG system first retrieves relevant information from an external knowledge base, then provides that information to a language model as context. This helps the model answer questions based on private documents and can reduce hallucinations.
+
+Before retrieval, a RAG system usually splits long documents into smaller chunks. Each chunk is converted into an embedding vector. When a user asks a question, the system converts the question into a vector and searches for the most similar chunks. The retrieved chunks are then used to build a prompt for the language model.
