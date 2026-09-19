@@ -1,12 +1,28 @@
 from fastapi import FastAPI
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
+from contextlib import asynccontextmanager
+from app.document_loader import load_text_file
+from app.chunker import chunk_text
+from app.vector_store import VectorStore
+from app.llm_client import LLMClient
+from app.rag_pipeline import RAGPipeline
 
-app = FastAPI(title="RAG QA System")
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    text = load_text_file("data/sample.txt")
+    chunks = chunk_text(text, chunk_size=150, overlap=30)
+    store = VectorStore()
+    store.build_index(chunks)
+    llm_client = LLMClient()
+    app.state.pipeline = RAGPipeline(store, llm_client)
+    print("RAG 初始化完成")
+    yield
+app = FastAPI(title="RAG QA System", lifespan=lifespan)
 
 
 class QueryRequest(BaseModel):
-    question: str
-    top_k: int = 3
+    question: str = Field(min_length=1)
+    top_k: int = Field(default=3, ge=1, le=10)
 
 
 @app.get("/health")
@@ -20,8 +36,7 @@ def root():
 
 @app.post("/query")
 def query(request: QueryRequest):
-    return {
-        "question": request.question,
-        "answer": "RAG project skeleton is running successfully.",
-        "top_k": request.top_k,
-    }
+    return app.state.pipeline.ask(
+        question=request.question,
+        top_k=request.top_k,
+    )

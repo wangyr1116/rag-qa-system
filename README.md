@@ -8,6 +8,9 @@ A beginner-friendly RAG project built with FastAPI, sentence-transformers, and F
 - Build vector index
 - Retrieve relevant chunks
 - Return retrieved chunks with chunk IDs and squared L2 distances
+- Generate answers from retrieved context using the DeepSeek API.
+- Expose the RAG pipeline through a FastAPI POST /query endpoint.
+- Validate question length and limit top_k to 1–10.
 
 ## Next Steps
 - Connect a real LLM API
@@ -45,3 +48,17 @@ Current limitations:
 - Fixed-size character chunking can split words and sentences.
 - Retrieval can return candidates even when the document has no answer.
 - Retrieval is not yet connected to the FastAPI query endpoint or an LLM.
+
+### Completed: End-to-End RAG API
+
+- Initialize the embedding model and document index during application startup.
+- Retrieve context, build a prompt, and generate an answer for each query.
+- Return the question, answer, and retrieved sources.
+- Read the API key from an environment variable.
+- Manually verified an in-document question and an out-of-document question.
+- Verified HTTP 422 responses for an empty question and out-of-range top_k values.
+
+Current limitations:
+- Retrieved sources are candidate evidence, not verified sentence-level citations.
+- Refusal behavior has only been checked on a small number of examples.
+- Fixed-size character chunking can split words and sentences.
