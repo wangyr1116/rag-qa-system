@@ -1,0 +1,32 @@
+[
+  {
+    "id": "q1",
+    "question": "How does RNN process tokens?",
+    "expected_answer": "One by one.",
+    "evidence": "RNN processes tokens one by one."
+  },
+  {
+    "id": "q2",
+    "question": "What is Transformer?",
+    "expected_answer": "A neural network architecture.",
+    "evidence": "Transformer is a neural network architecture"
+  },
+  {
+  "id": "q3",
+  "question": "Why does Transformer use positional encoding?",
+  "expected_answer": "Because self-attention alone does not know the original order of tokens.",
+  "evidence": "Positional encoding is used because self-attention alone does not know the original order of tokens."
+},
+{
+  "id": "q4",
+  "question": "What do decoder-only language models predict?",
+  "expected_answer": "The next token based on previous tokens.",
+  "evidence": "They predict the next token based on previous tokens."
+},
+{
+  "id": "q5",
+  "question": "What does a RAG system retrieve from an external knowledge base?",
+  "expected_answer": "Relevant information.",
+  "evidence": "A RAG system first retrieves relevant information from an external knowledge base"
+}
+]

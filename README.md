@@ -62,3 +62,25 @@ Current limitations:
 - Retrieved sources are candidate evidence, not verified sentence-level citations.
 - Refusal behavior has only been checked on a small number of examples.
 - Fixed-size character chunking can split words and sentences.
+
+### Retrieval Evaluation: Chunking Baselines
+
+Evaluated five manually annotated questions on one English sample document.
+A hit means at least one retrieved chunk contains the exact annotated evidence.
+
+| Chunking strategy | Overlap (characters) | Chunks | Top K | Evidence hit rate |
+|---|---:|---:|---:|---:|
+| Fixed: 150 characters | 30 | 15 | 3 | 40.0% (2/5) |
+| Fixed: 300 characters | 30 | 7 | 3 | 100.0% (5/5) |
+| Paragraph-based | N/A | 6 | 3 | 100.0% (5/5) |
+| Paragraph-based | N/A | 6 | 1 | 100.0% (5/5) |
+
+With 150-character chunks, the complete evidence for q3–q5 did not
+appear in any single chunk. Larger chunks and paragraph boundaries
+preserved the annotated evidence in these examples.
+
+Limitations:
+- The dataset contains only five questions from one short document.
+- Exact evidence matching does not measure semantic answerability or answer quality.
+- Chunk sizes and retrieved context lengths differ across strategies.
+- Paragraph chunking does not enforce a maximum input length.

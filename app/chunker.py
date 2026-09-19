@@ -23,3 +23,13 @@ def chunk_text(text: str, chunk_size: int = 150, overlap: int = 30) -> list[str]
         start = start + chunk_size - overlap
 
     return chunks
+
+
+def chunk_by_paragraph(text: str) -> list[str]:
+    paragraphs = text.split("\n\n")
+    chunks = []
+    for paragraph in paragraphs:
+        paragraph = paragraph.strip()
+        if paragraph:
+            chunks.append(paragraph)
+    return chunks
