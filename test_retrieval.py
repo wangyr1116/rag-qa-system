@@ -4,9 +4,10 @@ from app.vector_store import VectorStore
 from app.prompts import build_qa_prompt
 from app.rag_pipeline import RAGPipeline
 from app.llm_client import LLMClient
+from app.chunker import chunk_by_paragraph
 
 text = load_text_file("data/sample.txt")
-chunks = chunk_text(text, chunk_size=150, overlap=30)
+chunks = chunk_by_paragraph(text)
 
 store = VectorStore()
 store.build_index(chunks)
