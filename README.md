@@ -13,7 +13,6 @@ A beginner-friendly RAG project built with FastAPI, sentence-transformers, and F
 - Validate question length and limit top_k to 1–10.
 
 ## Next Steps
-- Connect a real LLM API
 - Support PDF and Markdown files
 - Add reranking
 - Build a frontend
@@ -47,7 +46,6 @@ Implemented `app/chunker.py` to split long documents into overlapping text chunk
 Current limitations:
 - Fixed-size character chunking can split words and sentences.
 - Retrieval can return candidates even when the document has no answer.
-- Retrieval is not yet connected to the FastAPI query endpoint or an LLM.
 
 ### Completed: End-to-End RAG API
 
@@ -84,3 +82,5 @@ Limitations:
 - Exact evidence matching does not measure semantic answerability or answer quality.
 - Chunk sizes and retrieved context lengths differ across strategies.
 - Paragraph chunking does not enforce a maximum input length.
+
+Detailed commands, verification status, and experiment limitations are recorded in [docs/experiments.md](docs/experiments.md).
