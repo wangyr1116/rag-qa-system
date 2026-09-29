@@ -1,0 +1,5 @@
+A retrieval system should keep source metadata for every text chunk. Source metadata helps users verify where an answer came from.
+
+Retrieval quality depends on whether the relevant evidence is returned near the top of the result list. A low distance does not guarantee that a retrieved chunk contains the complete answer.
+
+When a knowledge base does not contain enough evidence, the system should say that it cannot answer from the available documents.

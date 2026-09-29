@@ -3,30 +3,63 @@
     "id": "q1",
     "question": "How does RNN process tokens?",
     "expected_answer": "One by one.",
-    "evidence": "RNN processes tokens one by one."
+    "evidence": "RNN processes tokens one by one.",
+    "source": "data/sample.txt"
   },
   {
     "id": "q2",
     "question": "What is Transformer?",
     "expected_answer": "A neural network architecture.",
-    "evidence": "Transformer is a neural network architecture"
+    "evidence": "Transformer is a neural network architecture",
+    "source": "data/sample.txt"
   },
   {
   "id": "q3",
   "question": "Why does Transformer use positional encoding?",
   "expected_answer": "Because self-attention alone does not know the original order of tokens.",
-  "evidence": "Positional encoding is used because self-attention alone does not know the original order of tokens."
+  "evidence": "Positional encoding is used because self-attention alone does not know the original order of tokens.",
+  "source": "data/sample.txt"
 },
 {
   "id": "q4",
   "question": "What do decoder-only language models predict?",
   "expected_answer": "The next token based on previous tokens.",
-  "evidence": "They predict the next token based on previous tokens."
+  "evidence": "They predict the next token based on previous tokens.",
+  "source": "data/sample.txt"
 },
 {
   "id": "q5",
   "question": "What does a RAG system retrieve from an external knowledge base?",
   "expected_answer": "Relevant information.",
-  "evidence": "A RAG system first retrieves relevant information from an external knowledge base"
+  "evidence": "A RAG system first retrieves relevant information from an external knowledge base",
+  "source": "data/sample.txt"
+},
+{
+  "id": "q3_rewrite_1",
+  "question": "why is positional encoding essential for a Transformer model?",
+  "expected_answer": "Because self-attention alone does not know the original order of tokens.",
+  "evidence": "Positional encoding is used because self-attention alone does not know the original order of tokens.",
+  "source": "data/sample.txt"
+},
+{
+  "id": "q3_rewrite_2",
+  "question": "why does a Transformer need additional information about token order?",
+  "expected_answer": "Because self-attention alone does not know the original order of tokens.",
+  "evidence": "Positional encoding is used because self-attention alone does not know the original order of tokens.",
+  "source": "data/sample.txt"
+},
+{
+  "id": "ops_dev_1",
+  "question": "Why should a RAG system keep source metadata?",
+  "expected_answer": "It helps users verify where an answer came from.",
+  "evidence": "Source metadata helps users verify where an answer came from.",
+  "source": "data/rag_operations.txt"
+},
+{
+  "id": "ops_dev_2",
+  "question": "What should a system do when its knowledge base lacks enough evidence?",
+  "expected_answer": "It should say that it cannot answer from the available documents.",
+  "evidence": "When a knowledge base does not contain enough evidence, the system should say that it cannot answer from the available documents.",
+  "source": "data/rag_operations.txt"
 }
 ]

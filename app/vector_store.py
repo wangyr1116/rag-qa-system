@@ -7,14 +7,16 @@ class VectorStore:
         self.model = SentenceTransformer(model_name)
         self.index = None
         self.text_chunks = []
+        self.sources = []
 
-    def build_index(self, chunks: list[str]) -> None:
+    def build_index(self, chunks: list[str], sources: list[str]) -> None:
         if not chunks:
             raise ValueError("chunks cannot be empty")
-
+        if len(chunks) != len(sources):
+            raise ValueError("chunks and sources must have the same length")
         self.text_chunks = chunks
+        self.sources = sources
         embeddings = self.model.encode(chunks, convert_to_numpy=True).astype("float32")
-
         dimension = embeddings.shape[1]
         self.index = faiss.IndexFlatL2(dimension)
         self.index.add(embeddings)
@@ -34,6 +36,8 @@ class VectorStore:
                         "chunk_id": int(idx),
                         "chunk": self.text_chunks[idx],
                         "score": float(distances[0][i]),
+                        "source": self.sources[idx],
+
                     }
                 )
 

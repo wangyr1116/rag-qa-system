@@ -1,0 +1,37 @@
+[
+  {
+    "id": "test_1",
+    "question": "How does self-attention connect information across a sequence?",
+    "expected_answer": "It lets each token consider other tokens in the same sequence and calculate relevant information.",
+    "evidence": "Self-attention allows each token to consider other tokens in the same sequence and calculate which information is most relevant.",
+    "source": "data/sample.txt"
+  },
+  {
+    "id": "test_2",
+    "question": "How does multi-head attention help a Transformer?",
+    "expected_answer": "It lets the model learn different relationships between tokens at the same time.",
+    "evidence": "Multi-head attention lets the model learn different relationships between tokens at the same time.",
+    "source": "data/sample.txt"
+  },
+  {
+    "id": "test_3",
+    "question": "How does a RAG system handle long documents?",
+    "expected_answer": "Long documents are split into smaller chunks before retrieval.",
+    "evidence": "Before retrieval, a RAG system usually splits long documents into smaller chunks.",
+    "source": "data/sample.txt"
+  },
+  {
+  "id": "ops_test_1",
+  "question": "Can a low retrieval distance prove that the full answer is present?",
+  "expected_answer": "No. A low distance does not guarantee a complete answer.",
+  "evidence": "A low distance does not guarantee that a retrieved chunk contains the complete answer.",
+  "source": "data/rag_operations.txt"
+},
+{
+  "id": "ops_test_2",
+  "question": "What information should every retrieved text chunk retain for answer verification?",
+  "expected_answer": "Source metadata.",
+  "evidence": "A retrieval system should keep source metadata for every text chunk.",
+  "source": "data/rag_operations.txt"
+}
+]

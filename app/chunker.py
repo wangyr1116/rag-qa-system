@@ -33,3 +33,22 @@ def chunk_by_paragraph(text: str) -> list[str]:
         if paragraph:
             chunks.append(paragraph)
     return chunks
+
+
+def chunk_document(
+    text: str,
+    strategy: str,
+    chunk_size: int = 150,
+    overlap: int = 30,
+) -> list[str]:
+    if strategy == "fixed":
+        return chunk_text(
+            text,
+            chunk_size=chunk_size,
+            overlap=overlap,
+        )
+
+    if strategy == "paragraph":
+        return chunk_by_paragraph(text)
+
+    raise ValueError(f"unknown chunking strategy: {strategy}")

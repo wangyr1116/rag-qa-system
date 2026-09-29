@@ -4,19 +4,22 @@ from app.vector_store import VectorStore
 from app.prompts import build_qa_prompt
 from app.rag_pipeline import RAGPipeline
 from app.llm_client import LLMClient
-from app.chunker import chunk_by_paragraph
 
 text = load_text_file("data/sample.txt")
-chunks = chunk_by_paragraph(text)
+chunks = chunk_text(text, chunk_size=150, overlap=30)
 
 store = VectorStore()
-store.build_index(chunks)
+store.build_index(
+    chunks,
+    sources=["data/sample.txt"] * len(chunks),
+)
 question = "What is the capital of France?"
 results = store.search(question, top_k=3)
 for item in results:
     print("文本块下标：", item["chunk_id"])
     print("距离：", item["score"])
     print("原文：", item["chunk"])
+    print("来源：", item["source"])
 
 print("实际返回数量：", len(results))
 print(results[0]["chunk"])

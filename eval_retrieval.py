@@ -1,7 +1,13 @@
 import json
-from app.document_loader import load_text_file
+from app.document_loader import load_text_files
 from app.vector_store import VectorStore
-from app.chunker import chunk_by_paragraph,chunk_text
+from app.chunker import chunk_document
+from app.settings import (
+    CHUNKING,
+    CHUNK_OVERLAP,
+    CHUNK_SIZE,
+    SOURCE_PATHS,
+)
 import argparse
 
 parser = argparse.ArgumentParser()
@@ -18,42 +24,64 @@ if args.top_k < 1:
     parser.error("--top-k must be at least 1")
 top_k = args.top_k
 
-text = load_text_file("data/sample.txt")
-if args.chunking == "fixed":
-    if args.chunk_size <= 0:
-        parser.error("--chunk-size must be greater than 0")
-    if not 0 <= args.overlap < args.chunk_size:
-        parser.error("--overlap must satisfy 0 <= overlap < chunk-size")
-    chunks = chunk_text(text, chunk_size=args.chunk_size, overlap=args.overlap)
-    print("切块大小：", args.chunk_size, "重叠：", args.overlap)
-else:
-    chunks = chunk_by_paragraph(text)
+documents = load_text_files(SOURCE_PATHS)
+
+all_chunks = []
+all_sources = []
+
+for source, text in documents:
+    document_chunks = chunk_document(
+        text,
+        strategy=args.chunking,
+        chunk_size=args.chunk_size,
+        overlap=args.overlap,
+    )
+
+    all_chunks.extend(document_chunks)
+    all_sources.extend([source] * len(document_chunks))
 
 print("切块方式：", args.chunking)
-print("文本块数量：", len(chunks))
+print("文本块数量：", len(all_chunks))
 
 store = VectorStore()
-store.build_index(chunks)
+store.build_index(all_chunks, sources=all_sources)
 
-hit_count = 0
-with open("data/eval_cases.json", encoding="utf-8") as f:
-    cases = json.load(f)
+def evaluate_cases(cases_path, dataset_name):
+    hit_count = 0
 
-for case in cases:
-    evidence_available = False
-    for chunk in chunks:
-        if case["evidence"] in chunk:
-            evidence_available = True
-    results = store.search(case["question"], top_k=top_k)
-    hit = False
-    
-    for item in results:
-        if case["evidence"] in item["chunk"]:
-            hit = True
-    if hit:
-        hit_count += 1
-    print(case["id"], case["question"], "命中：", hit)
-    print("完整证据存在于某个文本块：", evidence_available)
+    with open(cases_path, encoding="utf-8") as f:
+        cases = json.load(f)
 
-hit_rate = hit_count / len(cases)
-print(f"Top-{top_k} 证据命中率：{hit_rate:.1%}（{hit_count}/{len(cases)}）")
+    for case in cases:
+        evidence_available = any(
+    case["source"] == source and case["evidence"] in chunk
+    for chunk, source in zip(all_chunks, all_sources)
+)
+
+        results = store.search(case["question"], top_k=top_k)
+        for item in results:
+            print(
+                    "检索结果：",
+                    f"source={item['source']}",
+                    f"chunk_id={item['chunk_id']}",
+                    f"distance={item['score']:.4f}",
+                    )
+        hit = any(
+            case["source"] == item["source"] and case["evidence"] in item["chunk"]
+            for item in results
+        )
+
+        if hit:
+            hit_count += 1
+
+        print(case["id"], case["question"], "命中：", hit)
+        print("完整证据存在于某个文本块：", evidence_available)
+
+    hit_rate = hit_count / len(cases)
+    print(
+        f"【{dataset_name}】Top-{top_k} 证据命中率："
+        f"{hit_rate:.1%}（{hit_count}/{len(cases)}）"
+    )
+
+evaluate_cases("data/eval_cases.json", "开发集")
+evaluate_cases("data/test_cases.json", "独立测试集")

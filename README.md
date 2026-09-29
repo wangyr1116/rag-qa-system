@@ -7,9 +7,11 @@ A beginner-friendly RAG project built with FastAPI, sentence-transformers, and F
 - Chunk text into segments
 - Build vector index
 - Retrieve relevant chunks
-- Return retrieved chunks with chunk IDs and squared L2 distances
+- Return retrieved chunks with source paths, chunk IDs, and squared L2 distances
+- Attach traceable source labels to model context and validate answer citations against retrieved candidates
 - Generate answers from retrieved context using the DeepSeek API.
-- Expose the RAG pipeline through a FastAPI POST /query endpoint.
+- Expose retrieval through `POST /search` without a generation-model API key.
+- Expose generated answers through the FastAPI `POST /query` endpoint.
 - Validate question length and limit top_k to 1–10.
 
 ## Next Steps
@@ -60,6 +62,20 @@ Current limitations:
 - Retrieved sources are candidate evidence, not verified sentence-level citations.
 - Refusal behavior has only been checked on a small number of examples.
 - Fixed-size character chunking can split words and sentences.
+
+### Completed: Traceable Retrieval API
+
+- `POST /search` returns retrieval results without invoking DeepSeek.
+- `POST /prepare` returns the retrieved candidates and final prompt without invoking DeepSeek, so prompt construction can be inspected without an API key.
+- Every result includes `source`, `chunk_id`, `score`, and `chunk`.
+- `POST /query` returns both `sources` (retrieved candidates) and `citations` (answer labels validated against those candidates).
+- The service indexes multiple local text documents and preserves a source path for every chunk.
+- The embedding index starts without `DEEPSEEK_API_KEY`; the key is only needed when `/query` generates an answer.
+- Manually verified `/search` against `data/sample.txt` using a fixed 150-character chunk index.
+- Verified multi-document retrieval against `data/rag_operations.txt`, including chunk-to-source mapping and mismatched-metadata rejection.
+- `GET /config` exposes the active documents and chunking configuration.
+- `GET /documents` lists loaded documents, the chunk count for each document, and the total indexed chunk count.
+- When no generation key is configured, `POST /query` returns HTTP 503 with a clear error while retrieval remains available.
 
 ### Retrieval Evaluation: Chunking Baselines
 
