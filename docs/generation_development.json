@@ -1,0 +1,35 @@
+{
+  "snapshot": "docs\\distances_development.json",
+  "rows": [
+    {
+      "id": "ops_dev_1",
+      "question": "Why should a RAG system keep source metadata?",
+      "candidate_sufficient": true,
+      "source": "data/rag_operations.txt",
+      "chunk_id": 6,
+      "chunk": "A retrieval system should keep source metadata for every text chunk. Source metadata helps users verify where an answer came from.",
+      "prompt": "Answer the question using only the context below.\nCite the supporting source label in this format:\n[source: path, chunk_id: number]\nIf the context does not contain the answer, say \"I don't know.\"\n\nContext:\n[source: data/rag_operations.txt, chunk_id: 6]\nA retrieval system should keep source metadata for every text chunk. Source metadata helps users verify where an answer came from.\n\nQuestion:\nWhy should a RAG system keep source metadata?\n\nAnswer:\n",
+      "answer": "A RAG system should keep source metadata so users can verify where an answer came from. [source: data/rag_operations.txt, chunk_id: 6]"
+    },
+    {
+      "id": "ood_dev_1",
+      "question": "What is the capital of France?",
+      "candidate_sufficient": false,
+      "source": "data/sample.txt",
+      "chunk_id": 2,
+      "chunk": "Transformer can process many tokens in parallel during training. Positional encoding is used because self-attention alone does not know the original order of tokens. Multi-head attention lets the model learn different relationships between tokens at the same time.",
+      "prompt": "Answer the question using only the context below.\nCite the supporting source label in this format:\n[source: path, chunk_id: number]\nIf the context does not contain the answer, say \"I don't know.\"\n\nContext:\n[source: data/sample.txt, chunk_id: 2]\nTransformer can process many tokens in parallel during training. Positional encoding is used because self-attention alone does not know the original order of tokens. Multi-head attention lets the model learn different relationships between tokens at the same time.\n\nQuestion:\nWhat is the capital of France?\n\nAnswer:\n",
+      "answer": "I don't know."
+    },
+    {
+      "id": "ood_dev_3",
+      "question": "How many attention heads does the Transformer described in the documents use?",
+      "candidate_sufficient": false,
+      "source": "data/sample.txt",
+      "chunk_id": 2,
+      "chunk": "Transformer can process many tokens in parallel during training. Positional encoding is used because self-attention alone does not know the original order of tokens. Multi-head attention lets the model learn different relationships between tokens at the same time.",
+      "prompt": "Answer the question using only the context below.\nCite the supporting source label in this format:\n[source: path, chunk_id: number]\nIf the context does not contain the answer, say \"I don't know.\"\n\nContext:\n[source: data/sample.txt, chunk_id: 2]\nTransformer can process many tokens in parallel during training. Positional encoding is used because self-attention alone does not know the original order of tokens. Multi-head attention lets the model learn different relationships between tokens at the same time.\n\nQuestion:\nHow many attention heads does the Transformer described in the documents use?\n\nAnswer:\n",
+      "answer": "I don't know."
+    }
+  ]
+}
