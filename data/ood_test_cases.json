@@ -1,0 +1,26 @@
+[
+  {
+    "id": "ood_test_1",
+    "question": "Who painted the Mona Lisa?",
+    "category": "unrelated",
+    "reason": "两份文档都没有提供绘画作品或画家的信息。"
+  },
+  {
+    "id": "ood_test_2",
+    "question": "What is the chemical symbol for gold?",
+    "category": "unrelated",
+    "reason": "两份文档都没有提供化学元素及其符号的信息。"
+  },
+  {
+    "id": "ood_test_3",
+    "question": "What is the mathematical formula for the positional encoding mentioned in the documents?",
+    "category": "related_but_missing",
+    "reason": "文档解释了位置编码用于提供词元顺序信息，但没有给出计算公式。"
+  },
+  {
+    "id": "ood_test_4",
+    "question": "How many days should a retrieval system retain source metadata before deleting it?",
+    "category": "related_but_missing",
+    "reason": "文档说明应保留来源元数据以帮助核查答案来源，但没有规定保留天数或删除策略。"
+  }
+]

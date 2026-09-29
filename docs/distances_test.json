@@ -1,0 +1,95 @@
+{
+  "split": "test",
+  "source_paths": [
+    "data/sample.txt",
+    "data/rag_operations.txt"
+  ],
+  "chunking": "paragraph",
+  "chunk_size": 150,
+  "overlap": 30,
+  "chunk_count": 9,
+  "top_k": 1,
+  "rows": [
+    {
+      "id": "test_1",
+      "question": "How does self-attention connect information across a sequence?",
+      "category": "answerable",
+      "distance": 1.14972984790802,
+      "source": "data/sample.txt",
+      "chunk_id": 2,
+      "chunk": "Transformer can process many tokens in parallel during training. Positional encoding is used because self-attention alone does not know the original order of tokens. Multi-head attention lets the model learn different relationships between tokens at the same time."
+    },
+    {
+      "id": "test_2",
+      "question": "How does multi-head attention help a Transformer?",
+      "category": "answerable",
+      "distance": 0.6145712733268738,
+      "source": "data/sample.txt",
+      "chunk_id": 2,
+      "chunk": "Transformer can process many tokens in parallel during training. Positional encoding is used because self-attention alone does not know the original order of tokens. Multi-head attention lets the model learn different relationships between tokens at the same time."
+    },
+    {
+      "id": "test_3",
+      "question": "How does a RAG system handle long documents?",
+      "category": "answerable",
+      "distance": 0.699102520942688,
+      "source": "data/sample.txt",
+      "chunk_id": 5,
+      "chunk": "Before retrieval, a RAG system usually splits long documents into smaller chunks. Each chunk is converted into an embedding vector. When a user asks a question, the system converts the question into a vector and searches for the most similar chunks. The retrieved chunks are then used to build a prompt for the language model."
+    },
+    {
+      "id": "ops_test_1",
+      "question": "Can a low retrieval distance prove that the full answer is present?",
+      "category": "answerable",
+      "distance": 0.5941777229309082,
+      "source": "data/rag_operations.txt",
+      "chunk_id": 7,
+      "chunk": "Retrieval quality depends on whether the relevant evidence is returned near the top of the result list. A low distance does not guarantee that a retrieved chunk contains the complete answer."
+    },
+    {
+      "id": "ops_test_2",
+      "question": "What information should every retrieved text chunk retain for answer verification?",
+      "category": "answerable",
+      "distance": 0.6583399176597595,
+      "source": "data/rag_operations.txt",
+      "chunk_id": 6,
+      "chunk": "A retrieval system should keep source metadata for every text chunk. Source metadata helps users verify where an answer came from."
+    },
+    {
+      "id": "ood_test_1",
+      "question": "Who painted the Mona Lisa?",
+      "category": "unrelated",
+      "distance": 1.832516074180603,
+      "source": "data/sample.txt",
+      "chunk_id": 2,
+      "chunk": "Transformer can process many tokens in parallel during training. Positional encoding is used because self-attention alone does not know the original order of tokens. Multi-head attention lets the model learn different relationships between tokens at the same time."
+    },
+    {
+      "id": "ood_test_2",
+      "question": "What is the chemical symbol for gold?",
+      "category": "unrelated",
+      "distance": 1.8332295417785645,
+      "source": "data/rag_operations.txt",
+      "chunk_id": 6,
+      "chunk": "A retrieval system should keep source metadata for every text chunk. Source metadata helps users verify where an answer came from."
+    },
+    {
+      "id": "ood_test_3",
+      "question": "What is the mathematical formula for the positional encoding mentioned in the documents?",
+      "category": "related_but_missing",
+      "distance": 1.0678131580352783,
+      "source": "data/sample.txt",
+      "chunk_id": 2,
+      "chunk": "Transformer can process many tokens in parallel during training. Positional encoding is used because self-attention alone does not know the original order of tokens. Multi-head attention lets the model learn different relationships between tokens at the same time."
+    },
+    {
+      "id": "ood_test_4",
+      "question": "How many days should a retrieval system retain source metadata before deleting it?",
+      "category": "related_but_missing",
+      "distance": 0.9730650186538696,
+      "source": "data/rag_operations.txt",
+      "chunk_id": 6,
+      "chunk": "A retrieval system should keep source metadata for every text chunk. Source metadata helps users verify where an answer came from."
+    }
+  ]
+}

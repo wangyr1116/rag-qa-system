@@ -1,0 +1,26 @@
+[
+  {
+    "id": "ood_dev_1",
+    "question": "What is the capital of France?",
+    "category": "unrelated",
+    "reason": "两份文档都没有提供国家首都的信息。"
+  },
+  {
+    "id": "ood_dev_2",
+    "question": "At what temperature does pure water freeze at standard atmospheric pressure?",
+    "category": "unrelated",
+    "reason": "两份文档都没有讨论水的物理性质或凝固温度。"
+  },
+  {
+    "id": "ood_dev_3",
+    "question": "How many attention heads does the Transformer described in the documents use?",
+    "category": "related_but_missing",
+    "reason": "文档说明了多头注意力的作用，但没有给出具体模型的注意力头数量。"
+  },
+  {
+    "id": "ood_dev_4",
+    "question": "What chunk size in characters do the documents recommend for a RAG system?",
+    "category": "related_but_missing",
+    "reason": "文档介绍了检索前将长文档切成小块的流程，但没有推荐具体的字符切块大小。"
+  }
+]
