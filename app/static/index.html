@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="zh-CN">
+<meta charset="utf-8">
+<title>文档问答</title>
+<body>
+<h1>文档问答</h1>
+<p>依据已加载文档回答；证据不足时应说明无法回答。</p>
+<form id="form">
+  <input id="question" aria-label="问题" placeholder="请输入问题" required size="65">
+  <button id="submit">提问</button>
+</form>
+<p id="status" role="status"></p>
+<h2>答案</h2><p id="answer" style="white-space: pre-wrap"></p>
+<h2>候选证据（不等于答案已被验证）</h2><pre id="sources" style="white-space: pre-wrap"></pre>
+<script>
+const get = (id) => document.getElementById(id);
+get("form").addEventListener("submit", async (event) => {
+  event.preventDefault();
+  const question = get("question").value.trim();
+  if (!question) { get("status").textContent = "请输入有效问题"; return; }
+  get("submit").disabled = true;
+  get("status").textContent = "正在检索并生成，请稍候……";
+  get("answer").textContent = ""; get("sources").textContent = "";
+  try {
+    const response = await fetch("/query", {
+      method: "POST", headers: {"Content-Type": "application/json"},
+      body: JSON.stringify({question, top_k: 1})
+    });
+    const data = await response.json();
+    if (!response.ok) throw new Error(JSON.stringify(data.detail ?? data));
+    get("answer").textContent = data.answer;
+    get("sources").textContent = data.sources.map(item =>
+      `${item.source} #${item.chunk_id}\n${item.chunk}`).join("\n\n");
+    get("status").textContent = "完成";
+  } catch (error) { get("status").textContent = `请求失败：${error.message}`; }
+  finally { get("submit").disabled = false; }
+});
+</script>
+</body>
+</html>

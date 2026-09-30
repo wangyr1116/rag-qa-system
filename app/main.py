@@ -5,6 +5,8 @@ from app.document_loader import load_text_files
 from app.chunker import chunk_document
 from app.vector_store import VectorStore
 from app.rag_pipeline import RAGPipeline
+from pathlib import Path
+from fastapi.responses import FileResponse
 from app.settings import (
     CHUNKING,
     CHUNK_OVERLAP,
@@ -72,7 +74,6 @@ def config():
         "chunk_overlap": CHUNK_OVERLAP,
     }
 
-
 @app.get("/documents")
 def documents():
     return app.state.document_stats
@@ -80,7 +81,8 @@ def documents():
 
 @app.get("/")
 def root():
-    return {"status": "ok", "建议访问": "/docs"}
+    page = Path(__file__).resolve().parent / "static" / "index.html"
+    return FileResponse(page)
 
 @app.post("/search")
 def search(request: QueryRequest):

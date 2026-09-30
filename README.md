@@ -3,6 +3,7 @@
 A beginner-friendly RAG project built with FastAPI, sentence-transformers, and FAISS.
 
 ## Current Features
+- Use a browser question-answering page at `/` to view answers and candidate evidence, with loading and error feedback.
 - Load local text documents
 - Chunk text into segments
 - Build vector index
@@ -14,10 +15,27 @@ A beginner-friendly RAG project built with FastAPI, sentence-transformers, and F
 - Expose generated answers through the FastAPI `POST /query` endpoint.
 - Validate question length and limit top_k to 1–10.
 
+## Local browser demo
+
+Windows CMD, from the project directory (requires uv):
+
+```bat
+uv sync
+set "DEEPSEEK_API_KEY=your-api-key"
+uv run uvicorn app.main:app --reload
+```
+
+Open http://127.0.0.1:8000/ after startup. Ask: `Why should a RAG system keep source metadata?`
+The page requests Top-1 retrieval and displays the generated answer and candidate evidence.
+Each submitted question invokes the paid generation API. Keep the key in the local environment, not in source files.
+The embedding model may require a download on first startup.
+`GET /documents` lists the loaded documents; `/docs` provides the API interface.
+Candidate evidence does not guarantee answer support, and validated citation labels do not establish semantic correctness.
+
 ## Next Steps
 - Support PDF and Markdown files
 - Add reranking
-- Build a frontend
+- Improve the minimal browser interface
 
 ## Learning Progress
 
