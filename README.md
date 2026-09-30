@@ -26,14 +26,23 @@ uv run uvicorn app.main:app --reload
 ```
 
 Open http://127.0.0.1:8000/ after startup. Ask: `Why should a RAG system keep source metadata?`
-The page requests Top-1 retrieval and displays the generated answer and candidate evidence.
+The page requests Top-3 retrieval and displays the generated answer and candidate evidence.
 Each submitted question invokes the paid generation API. Keep the key in the local environment, not in source files.
 The embedding model may require a download on first startup.
 `GET /documents` lists the loaded documents; `/docs` provides the API interface.
 Candidate evidence does not guarantee answer support, and validated citation labels do not establish semantic correctness.
 
+### Use a custom document directory
+
+Before starting the server, run `set "RAG_DOCUMENT_DIR=knowledge"` in Windows CMD.
+The directory's immediate UTF-8 `.txt` and `.md` files are loaded in sorted order; Markdown is read as plain text, without structural parsing.
+The included fictional handbook supports the question `Who maintains the Cedar project handbook?`.
+Restart the server after changing documents to rebuild the in-memory index.
+Run `set "RAG_DOCUMENT_DIR="` before restarting to restore the original two sample documents.
+Clear this variable before running the original retrieval evaluations, which share the same source configuration.
+
 ## Next Steps
-- Support PDF and Markdown files
+- Support PDF files and structured Markdown parsing
 - Add reranking
 - Improve the minimal browser interface
 
