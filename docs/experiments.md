@@ -114,3 +114,10 @@ uv run python observe_distances.py
 - 请求开始时清空旧引用，避免等待或失败时残留上一题引用；助手读取最终差异确认位置正确，git diff --check 通过。
 - 用户报告完成；助手未独立读取浏览器答案，未重发生成请求。不能将此记录视为实际答案正确性或所有页面分支的验收。
 - 引用标签匹配候选块不等于语义支持校验，也不证明模型实际依赖该块。
+
+## 2026-09-30：生成服务超时与异常映射
+
+- 用户设置 LLMClient 的 timeout=30.0、max_retries=0，并在 /query 增加 SDK 异常分支。网络超时不等于整个接口的总耗时上限。
+- 助手实际执行临时离线检查：TestClient 不进入上下文，不执行 lifespan；模拟 pipeline.ask 分别抛出 APITimeoutError、APIConnectionError、RateLimitError、APIStatusError。四个响应状态分别为504、503、503、502，且 detail 与预期中文提示完全一致。
+- 模拟 OpenAI 构造函数确认收到 timeout=30.0 和 max_retries=0；py_compile 与 git diff --check 通过。临时检查未保存为新增脚本。
+- 未实例化 Embedding、未调用真实生成 API、未读取真实密钥；以上验证覆盖异常到 HTTP 响应的转换，不证明真实网络超时或浏览器展示已验收。

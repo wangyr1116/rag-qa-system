@@ -13,7 +13,12 @@ from app.settings import (
     CHUNK_SIZE,
     SOURCE_PATHS,
 )
-
+from openai import (
+    APITimeoutError,
+    APIConnectionError,
+    RateLimitError,
+    APIStatusError,
+)
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
@@ -116,4 +121,24 @@ def query(request: QueryRequest):
         raise HTTPException(
             status_code=503,
             detail=str(error),
+        ) from error
+    except APITimeoutError as error:
+        raise HTTPException(
+            status_code=504,
+            detail="生成服务响应超时，请稍后重试",
+        ) from error
+    except APIConnectionError as error:
+        raise HTTPException(
+            status_code=503,
+            detail="暂时无法连接生成服务，请稍后重试",
+        ) from error
+    except RateLimitError as error:
+        raise HTTPException(
+            status_code=503,
+            detail="生成服务当前受限，请稍后重试",
+        ) from error
+    except APIStatusError as error:
+        raise HTTPException(
+            status_code=502,
+            detail="生成服务返回错误，请检查服务配置或稍后重试",
         ) from error

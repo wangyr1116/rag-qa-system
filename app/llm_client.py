@@ -11,6 +11,8 @@ class LLMClient:
         self.client = OpenAI(
             api_key=api_key,
             base_url="https://api.deepseek.com",
+            timeout=30.0,
+            max_retries=0,
         )
     def generate(self, prompt: str) -> str:
         response = self.client.chat.completions.create(
