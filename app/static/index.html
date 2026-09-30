@@ -11,9 +11,30 @@
 </form>
 <p id="status" role="status"></p>
 <h2>答案</h2><p id="answer" style="white-space: pre-wrap"></p>
+<h2>答案引用</h2>
+<p>以下引用标签已匹配到候选证据，内容是否支持答案仍需核对。</p>
+<div id="citations"></div>
 <h2>候选证据（不等于答案已被验证）</h2><pre id="sources" style="white-space: pre-wrap"></pre>
 <script>
 const get = (id) => document.getElementById(id);
+function renderCitations(items) {
+  const container = get("citations");
+  container.replaceChildren();
+  if (items.length === 0) {
+    container.textContent = "本次答案没有可核对的引用标签。";
+    return;
+  }
+  for (const item of items) {
+    const details = document.createElement("details");
+    const summary = document.createElement("summary");
+    summary.textContent = `${item.source} #${item.chunk_id}`;
+    const content = document.createElement("p");
+    content.style.whiteSpace = "pre-wrap";
+    content.textContent = item.chunk;
+    details.append(summary, content);
+    container.append(details);
+  }
+}
 get("form").addEventListener("submit", async (event) => {
   event.preventDefault();
   const question = get("question").value.trim();
@@ -21,6 +42,7 @@ get("form").addEventListener("submit", async (event) => {
   get("submit").disabled = true;
   get("status").textContent = "正在检索并生成，请稍候……";
   get("answer").textContent = ""; get("sources").textContent = "";
+  get("citations").replaceChildren();
   try {
     const response = await fetch("/query", {
       method: "POST", headers: {"Content-Type": "application/json"},
@@ -29,6 +51,7 @@ get("form").addEventListener("submit", async (event) => {
     const data = await response.json();
     if (!response.ok) throw new Error(JSON.stringify(data.detail ?? data));
     get("answer").textContent = data.answer;
+    renderCitations(data.citations);
     get("sources").textContent = data.sources.map(item =>
       `${item.source} #${item.chunk_id}\n${item.chunk}`).join("\n\n");
     get("status").textContent = "完成";
