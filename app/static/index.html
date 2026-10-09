@@ -54,7 +54,11 @@ get("form").addEventListener("submit", async (event) => {
     renderCitations(data.citations);
     get("sources").textContent = data.sources.map(item =>
       `${item.source} #${item.chunk_id}\n${item.chunk}`).join("\n\n");
-    get("status").textContent = "完成";
+    const timing = data.timings_ms;
+    get("status").textContent =
+      `完成｜准备 ${timing.prepare} ms` +
+      `｜生成 ${timing.generation} ms` +
+      `｜流程 ${timing.total} ms`;
   } catch (error) { get("status").textContent = `请求失败：${error.message}`; }
   finally { get("submit").disabled = false; }
 });

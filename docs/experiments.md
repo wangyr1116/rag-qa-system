@@ -121,3 +121,9 @@ uv run python observe_distances.py
 - 助手实际执行临时离线检查：TestClient 不进入上下文，不执行 lifespan；模拟 pipeline.ask 分别抛出 APITimeoutError、APIConnectionError、RateLimitError、APIStatusError。四个响应状态分别为504、503、503、502，且 detail 与预期中文提示完全一致。
 - 模拟 OpenAI 构造函数确认收到 timeout=30.0 和 max_retries=0；py_compile 与 git diff --check 通过。临时检查未保存为新增脚本。
 - 未实例化 Embedding、未调用真实生成 API、未读取真实密钥；以上验证覆盖异常到 HTTP 响应的转换，不证明真实网络超时或浏览器展示已验收。
+
+## 2026-09-30：成功问答的分阶段耗时
+
+- 用户实现 RAGPipeline.ask 的局部计时，返回 timings_ms（prepare、generation、total），页面展示三项毫秒数。prepare 含检索和提示词构建；generation 含首次客户端初始化及生成；total 含引用过滤，不含启动建索引、HTTP传输和页面渲染。仅覆盖成功请求。
+- 用户报告 test_prepare.py 通过。助手实际临时模拟 perf_counter 读数10.0、10.125、10.625、10.650，断言结果分别为125.0、500.0、650.0 ms；相同读数产生全零耗时也通过，原答案和来源字段保留。
+- 未加载模型或调用外部 API，未新增检查脚本，浏览器实际展示尚未独立验收。
