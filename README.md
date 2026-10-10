@@ -35,15 +35,63 @@ Candidate evidence does not guarantee answer support, and validated citation lab
 ### Use a custom document directory
 
 Before starting the server, run `set "RAG_DOCUMENT_DIR=knowledge"` in Windows CMD.
-The directory's immediate UTF-8 `.txt` and `.md` files are loaded in sorted order; Markdown is read as plain text, without structural parsing.
+The directory's immediate UTF-8 `.txt` and `.md` files are loaded in sorted order; The default paragraph strategy reads Markdown as plain text; the markdown_tokens strategy preserves heading context and handles fenced code blocks within the model token budget.
 The included fictional handbook supports the question `Who maintains the Cedar project handbook?`.
 Restart the server after changing documents to rebuild the in-memory index.
 Run `set "RAG_DOCUMENT_DIR="` before restarting to restore the original two sample documents.
 Clear this variable before running the original retrieval evaluations, which share the same source configuration.
 
+## FastAPI corpus demo（真实资料演示）
+
+The repository includes six official English FastAPI tutorials pinned to commit `f5c6e9b4f9cadc1bf0f9a1fd672e621206b63007`. Raw files, provenance manifests, and the upstream license are preserved under `knowledge/fastapi`; expanded code examples are under `knowledge/fastapi_expanded`.
+
+Windows CMD:
+
+```bat
+uv sync
+set "RAG_DOCUMENT_DIR=knowledge\fastapi_expanded"
+set "RAG_CHUNKING=markdown_tokens"
+uv run uvicorn app.main:app --reload
+```
+
+`GET /documents` should report 6 documents and 127 chunks. `POST /search` works without a generation API key. Use `/docs` to search for `Should I raise or return HTTPException?` with `top_k=3`.
+
+The current MiniLM configuration accepts 256 tokens. Chunking counts heading text and special tokens, then splits oversized units. Code excerpts retain fences and indentation but may not be independently executable. Unsupported Markdown forms and individual oversized lines remain limitations; this is a corpus-specific parser, not a complete Markdown implementation.
+
+`ingest_fastapi_docs.py` and `expand_fastapi_docs.py` reproduce the corpus from the pinned revision. They intentionally stop if their output directory already exists. Existing checked-in snapshots require no download; do not rerun these scripts to start the service.
+
+### Retrieval comparison（检索对照）
+
+```bat
+set "RAG_DOCUMENT_DIR=knowledge\fastapi_expanded"
+set "RAG_CHUNKING=markdown_tokens"
+uv run python eval_retrieval.py --cases data/fastapi_dev_cases.json --top-k 3
+uv run python eval_retrieval.py --cases data/fastapi_test_cases.json --top-k 3
+```
+
+The evaluator compares vector Top-3 with RRF Top-3, using 10 candidates per channel (vector and BM25) and RRF constant 60. BM25 preprocessing lowercases text and preserves underscores in word tokens. RRF combines ranks, not raw BM25 scores and squared L2 distances.
+
+| Dataset | Questions | Vector Top-3 | RRF Top-3 |
+|---|---:|---:|---:|
+| Development | 6 | 5/6 (83.3%) | 6/6 (100.0%) |
+| Held-out | 6 | 3/6 (50.0%) | 4/6 (66.7%) |
+
+These are user-run source-and-evidence-string hit rates, not answer accuracy. The development annotations include manually checked equivalent evidence alternatives; earlier annotation versions and results remain in `docs/experiments.md`. The held-out dataset was frozen before retrieval changes and was not used to tune parameters. Six same-corpus held-out questions do not establish stable improvements or cross-domain generalization.
+
+Hybrid retrieval currently runs only in the evaluator. The browser and `/search`, `/prepare`, `/query` still use vector retrieval. Serving hybrid results with clearly named score fields is the next implementation task.
+
+Clear both settings before running the original sample evaluations or restoring the default demo:
+
+```bat
+set "RAG_DOCUMENT_DIR="
+set "RAG_CHUNKING="
+```
+
+Restart the service after configuration changes. Evaluation overrides such as `--chunking` may differ from service configuration.
+
 ## Next Steps
-- Support PDF files and structured Markdown parsing
-- Add reranking
+- Integrate the fixed hybrid retrieval strategy into the API with explicit score semantics
+- Verify a reproducible deployment and representative document coverage
 - Improve the minimal browser interface
 
 ## Learning Progress

@@ -1,0 +1,50 @@
+[
+  {
+    "id": "fastapi_dev_1",
+    "question": "Should I raise or return HTTPException?",
+    "expected_answer": "Raise HTTPException instead of returning it.",
+    "evidence": "Because it's a Python exception, you don't `return` it, you `raise` it.",
+    "source": "knowledge/fastapi_expanded/handling-errors.md"
+  },
+  {
+    "id": "fastapi_dev_2",
+    "question": "How can I make a query parameter optional with no specific default value?",
+    "expected_answer": "Set its default value to None.",
+    "evidence": "If you don't want to add a specific value but just make it optional, set the default as `None`.",
+    "source": "knowledge/fastapi_expanded/query-params.md"
+  },
+  {
+    "id": "fastapi_dev_3",
+    "question": "Why must /users/me be registered before /users/{user_id}?",
+    "expected_answer": "Path operations are evaluated in order.",
+    "evidence": "Because *path operations* are evaluated in order, you need to make sure that the path for `/users/me` is declared before the one for `/users/{user_id}`:",
+    "source": "knowledge/fastapi_expanded/path-params.md"
+  },
+  {
+    "id": "fastapi_dev_4",
+    "question": "What HTTP status code commonly indicates that a database record was created?",
+    "expected_answer": "201 Created.",
+    "evidence": "Another example would be `201`, \"Created\". It is commonly used after creating a new record in the database.",
+    "source": "knowledge/fastapi_expanded/response-status-code.md"
+  },
+  {
+    "id": "fastapi_dev_5",
+    "question": "Does response_model remove returned data fields that are absent from the output model?",
+    "expected_answer": "Yes, FastAPI filters out data not declared in the output model.",
+    "evidence_any": [
+  "So, **FastAPI** will take care of filtering out all the data that is not declared in the output model (using Pydantic).",
+  "We want FastAPI to keep **filtering** the data using the response model. So that even though the function returns more data, the response will only include the fields declared in the response model."
+],
+    "source": "knowledge/fastapi_expanded/response-model.md"
+  },
+  {
+    "id": "fastapi_dev_6",
+    "question": "Where does FastAPI read a function parameter declared as a Pydantic model?",
+    "expected_answer": "From the request body.",
+    "evidence_any": [
+  "function parameters that are declared to be Pydantic models should be **taken from the request body**.",
+  "If the parameter is declared to be of the type of a **Pydantic model**, it will be interpreted as a request **body**."
+],
+    "source": "knowledge/fastapi_expanded/body.md"
+  }
+]

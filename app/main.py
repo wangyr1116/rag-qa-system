@@ -23,7 +23,13 @@ from openai import (
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     documents = load_text_files(SOURCE_PATHS)
-
+    store = VectorStore()
+    def count_tokens(text: str) -> int:
+        token_ids = store.model.tokenizer.encode(
+            text,
+            truncation=False,
+        )
+        return len(token_ids)
     all_chunks = []
     all_sources = []
     document_stats = []
@@ -34,6 +40,8 @@ async def lifespan(app: FastAPI):
             strategy=CHUNKING,
             chunk_size=CHUNK_SIZE,
             overlap=CHUNK_OVERLAP,
+            count_tokens=count_tokens,
+            max_tokens=store.model.max_seq_length
         )
 
         all_chunks.extend(document_chunks)
@@ -45,7 +53,7 @@ async def lifespan(app: FastAPI):
             }
         )
 
-    store = VectorStore()
+
     store.build_index(all_chunks, sources=all_sources)
     app.state.document_stats = {
         "document_count": len(document_stats),

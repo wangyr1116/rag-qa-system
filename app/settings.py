@@ -20,5 +20,7 @@ def resolve_source_paths() -> list[str]:
     return [str(path) for path in paths]  # TODO 2：将 Path 对象转为字符串
 
 SOURCE_PATHS = resolve_source_paths()
-CHUNKING = "paragraph"
+CHUNKING = os.getenv("RAG_CHUNKING", "paragraph").strip()
+if CHUNKING not in {"fixed", "paragraph", "markdown_sections", "markdown_tokens"}:
+    raise ValueError(f"未知切块策略：{CHUNKING}")
 CHUNK_SIZE, CHUNK_OVERLAP = 150, 30

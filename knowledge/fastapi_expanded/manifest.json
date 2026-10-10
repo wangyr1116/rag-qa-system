@@ -1,0 +1,77 @@
+{
+  "revision": "f5c6e9b4f9cadc1bf0f9a1fd672e621206b63007",
+  "documents": [
+    {
+      "file": "handling-errors.md",
+      "code_sources": [
+        "docs_src/handling_errors/tutorial001_py310.py",
+        "docs_src/handling_errors/tutorial002_py310.py",
+        "docs_src/handling_errors/tutorial003_py310.py",
+        "docs_src/handling_errors/tutorial004_py310.py",
+        "docs_src/handling_errors/tutorial005_py310.py",
+        "docs_src/handling_errors/tutorial006_py310.py"
+      ],
+      "sha256": "923e9ae6bf80932036bfe4091db668be6216ef88c61701ab05240d9fcc170455"
+    },
+    {
+      "file": "response-status-code.md",
+      "code_sources": [
+        "docs_src/response_status_code/tutorial001_py310.py",
+        "docs_src/response_status_code/tutorial002_py310.py"
+      ],
+      "sha256": "53b3e19992ca7e351dc6233c77c5962c0454001a90e70de0d1c22ef098a3e59e"
+    },
+    {
+      "file": "query-params.md",
+      "code_sources": [
+        "docs_src/query_params/tutorial001_py310.py",
+        "docs_src/query_params/tutorial002_py310.py",
+        "docs_src/query_params/tutorial003_py310.py",
+        "docs_src/query_params/tutorial004_py310.py",
+        "docs_src/query_params/tutorial005_py310.py",
+        "docs_src/query_params/tutorial006_py310.py"
+      ],
+      "sha256": "c9a30c9d408aa7e5323314a7b627ed54c5c3875507f10896d85f86e9f487cc37"
+    },
+    {
+      "file": "path-params.md",
+      "code_sources": [
+        "docs_src/path_params/tutorial001_py310.py",
+        "docs_src/path_params/tutorial002_py310.py",
+        "docs_src/path_params/tutorial003_py310.py",
+        "docs_src/path_params/tutorial003b_py310.py",
+        "docs_src/path_params/tutorial004_py310.py",
+        "docs_src/path_params/tutorial005_py310.py"
+      ],
+      "sha256": "d9e8f83cffecb79d3b2da6be801c9a8a037134beeb23857ac51b81b53e38cd05"
+    },
+    {
+      "file": "body.md",
+      "code_sources": [
+        "docs_src/body/tutorial001_py310.py",
+        "docs_src/body/tutorial002_py310.py",
+        "docs_src/body/tutorial003_py310.py",
+        "docs_src/body/tutorial004_py310.py"
+      ],
+      "sha256": "ab9d5265e9f683701f2d270b7869747b1f5c0ee88eb9eafdd1a53b4c50090ca1"
+    },
+    {
+      "file": "response-model.md",
+      "code_sources": [
+        "docs_src/response_model/tutorial001_01_py310.py",
+        "docs_src/response_model/tutorial001_py310.py",
+        "docs_src/response_model/tutorial002_py310.py",
+        "docs_src/response_model/tutorial003_01_py310.py",
+        "docs_src/response_model/tutorial003_02_py310.py",
+        "docs_src/response_model/tutorial003_03_py310.py",
+        "docs_src/response_model/tutorial003_04_py310.py",
+        "docs_src/response_model/tutorial003_05_py310.py",
+        "docs_src/response_model/tutorial003_py310.py",
+        "docs_src/response_model/tutorial004_py310.py",
+        "docs_src/response_model/tutorial005_py310.py",
+        "docs_src/response_model/tutorial006_py310.py"
+      ],
+      "sha256": "0d391d398dbd61ab44dfae49f703e1a30d1f581fbc685228d1016a37a3ca2473"
+    }
+  ]
+}

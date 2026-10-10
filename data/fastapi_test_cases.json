@@ -1,0 +1,44 @@
+[
+  {
+    "id": "fastapi_test_1",
+    "question": "Can an HTTPException detail contain a JSON-compatible object instead of a string?",
+    "expected_answer": "Yes, detail can contain any JSON-convertible value.",
+    "evidence": "When raising an `HTTPException`, you can pass any value that can be converted to JSON as the parameter `detail`, not only `str`.",
+    "source": "knowledge/fastapi_expanded/handling-errors.md"
+  },
+  {
+    "id": "fastapi_test_2",
+    "question": "Is a non-path parameter mandatory when its declaration supplies a default?",
+    "expected_answer": "No, supplying a default makes it not required.",
+    "evidence": "When you declare a default value for non-path parameters (for now, we have only seen query parameters), then it is not required.",
+    "source": "knowledge/fastapi_expanded/query-params.md"
+  },
+  {
+    "id": "fastapi_test_3",
+    "question": "If item_id is annotated as int, is the path value 3 passed to the function as text or as an integer?",
+    "expected_answer": "As a Python integer.",
+    "evidence": "Notice that the value your function received (and returned) is `3`, as a Python `int`, not a string `\"3\"`.",
+    "source": "knowledge/fastapi_expanded/path-params.md"
+  },
+  {
+    "id": "fastapi_test_4",
+    "question": "May an HTTP 204 response include a response body?",
+    "expected_answer": "No, a 204 response must not have a body.",
+    "evidence": "This response is used when there is no content to return to the client, and so the response must not have a body.",
+    "source": "knowledge/fastapi_expanded/response-status-code.md"
+  },
+  {
+    "id": "fastapi_test_5",
+    "question": "Which wins if a route declares both a return type annotation and response_model?",
+    "expected_answer": "response_model takes priority.",
+    "evidence": "If you declare both a return type and a `response_model`, the `response_model` will take priority and be used by FastAPI.",
+    "source": "knowledge/fastapi_expanded/response-model.md"
+  },
+  {
+    "id": "fastapi_test_6",
+    "question": "Must clients include a request body on every API call?",
+    "expected_answer": "No, clients can request a path without sending a body.",
+    "evidence": "But clients don't necessarily need to send **request bodies** all the time, sometimes they only request a path, maybe with some query parameters, but don't send a body.",
+    "source": "knowledge/fastapi_expanded/body.md"
+  }
+]
