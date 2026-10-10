@@ -202,3 +202,15 @@ uv run python observe_distances.py
 - 用户启动真实资料服务并报告6篇、两接口候选一致。助手实际请求本地/config、/documents、/search、/prepare复核：markdown_tokens、6篇127块、固定融合配置；问题Should I raise or return HTTPException?、top_k=3，两接口候选完全一致，三条来源标签和原文均进入prompt。
 - 第一条来自handling-errors.md，chunk_id=18，vector名次2、lexical名次7，rrf_score=1/62+1/67=0.031054405392392875；正文直接说明raise而非return。该核验只确认服务接入及准备链路，不是新增检索评测或生成质量验收；未调用真实生成、未重跑留出集或调参。
 - 下一步在首页用该问题做一次生成演示，检查答案、引用原文和阶段耗时；随后完成交付复现。
+
+## 2026-10-10：真实资料首页生成演示
+
+- 已核实融合服务接入提交为7eb8057。用户在首页提问Should I raise or return HTTPException?，提供完整页面输出：You should raise it, not return it.，引用handling-errors.md的chunk_id=18；候选编号18/36/16。
+- 助手根据用户输出人工确认#18原文明示应raise而非return，与答案支持关系成立。用户页面显示准备25.7 ms、生成991.1 ms、流程1016.8 ms；准备包含融合检索与提示词构建，生成可能含首次客户端初始化，总流程还包含引用处理。本次未记录用量或费用。
+- 这是用户实际执行的一次端到端演示；助手未独立浏览页面、未重发生成请求。只确认此样例成功，不证明整体答案准确率、稳定拒答或平均延迟，未开展前后耗时对比。下一步为独立目录的锁定依赖启动复现。
+
+## 2026-10-10：独立目录启动复现
+
+- 用户报告通过：从本地仓库克隆到D:\llm-learning\rag-qa-system-repro，uv sync --locked安装依赖，设置真实资料目录和markdown_tokens，按指导清空新窗口生成密钥，8001启动及/documents、/search通过。助手未重新安装依赖或读取环境密钥。
+- 助手实际核实副本HEAD为7eb8057、Git工作区干净，并请求8001/config、/documents、/search：固定两路Top-10/RRF60/default Top-3，6篇127块；HTTPException问题返回18/36/16，首项rrf_score=0.031054405392392875、vector=2/lexical=7，与原服务一致。未调用生成接口或重跑题集。
+- 该结果验证已提交代码在独立目录和新虚拟环境中的启动复现，仍可能共享uv及Embedding缓存，不代表全新电脑、容器或无缓存下载已通过。副本保留供用户复现使用；原目录继续作为学习主目录。

@@ -57,7 +57,8 @@
 - 用户已将固定融合接入RAGPipeline.retrieve，/search、/prepare、/query共用；两路各Top-10、RRF常数60，默认最终Top-3，保留请求top_k控制最终数量。服务结果含rrf_score和ranks，不含原向量score或lexical_score；/config公开策略。用户运行test_prepare.py通过；助手读取差异确认，并实际请求本地/config、/documents、/search、/prepare：6篇127块，HTTPException问题返回3条，两接口候选完全一致且三条标签与原文均进入prompt；第一条#18，vector=2、lexical=7，rrf_score=0.031054405392392875。未调用/query或重跑评测；新语料生成答案、干净环境部署及成本/耗时对比尚未验收。
 - data/fastapi_test_cases.json六题已冻结，当前SHA256仍为eb888ad99dceeec3cebdedb33fc116f00bde69dd6bf1d261f53e12b72a08a563；用户实际完成独立测试并提供完整输出：向量3/6、融合4/6；第2题新增命中，第3/5题两路最终均未匹配指定证据，其他命中保持。助手核验冻结文件哈希未变并读取输出，未重跑留出检索。固定方案验收已收束，不用其输出挑参数、换标注或追分；详细条件及边界见experiments。
 - 结果无论提高/持平/退步，记录同口径事实，不反复试留出集。若发现实现缺陷应修复并说明重跑原因；若是标注歧义保留原结果并单独记录人工核查，不静默改题。
-- 2026-10-10接续核实HEAD为 `07c60f4 feat: add token-aware documentation retrieval and hybrid evaluation`；资料/切块/检索与依赖、题集及文档已提交。本轮融合服务接入与记录尚未提交，根目录main.py未跟踪并保留不动，默认用户执行提交。下一小步为真实资料首页单题生成演示，检查回答、引用原文与阶段耗时；不重复检索诊断和留出评测。
+- 2026-10-10核实HEAD为 `7eb8057 feat: serve hybrid retrieval with explicit score semantics`，融合服务接入及记录已提交；根目录main.py未跟踪，保留不动。用户提供真实首页生成结果：HTTPException问题正确回答应raise，引用#18原文直接支持；准备25.7 ms、生成991.1 ms、总流程1016.8 ms。助手读取用户输出并核对支持关系，未重发生成请求或独立查看浏览器。该次演示完成，不代表整体准确率或稳定延迟；费用尚未计量。
+- 独立目录复现已完成：用户报告本地克隆rag-qa-system-repro、uv sync --locked及8001服务验收通过；助手核实副本HEAD为7eb8057、工作区干净，并实际请求8001/config、/documents、/search，确认固定配置、6篇127块、候选18/36/16及首项分数一致。复用模型缓存，不等于全新电脑或容器部署，未重发生成。原项目新增文档记录待用户提交。下一小步为减少支架的独立Python修改：/config公开启动时实际Embedding上限与索引维度；不重复检索评测。
 - 后续RAG顺序：固定方案的服务接入（准确区分L2/BM25/RRF字段与策略）、真实问题的演示与交付复现、一次减少支架的独立修改；再进入独立Agent的两个只读工具/参数校验/终止与失败出口。六篇六题只作第一阶段证据，按场景需要扩资料与问题覆盖，不靠堆框架或追加小脚本弥补代表性不足。
 - 用户Python尚不熟，新代码需中文通俗解释输入输出、容器内数据、分支/循环执行顺序；保持15–40行、中等颗粒度支架，已掌握内容合并练习。细节见docs/experiments.md；整体计划见docs/learning_plan.md。
 

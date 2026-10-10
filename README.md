@@ -8,7 +8,7 @@ A beginner-friendly RAG project built with FastAPI, sentence-transformers, and F
 - Chunk text into segments
 - Build vector index
 - Retrieve relevant chunks
-- Return retrieved chunks with source paths, chunk IDs, and squared L2 distances
+- Return hybrid retrieval candidates with source paths, chunk IDs, RRF scores, and per-channel ranks
 - Attach traceable source labels to model context and validate answer citations against retrieved candidates
 - Generate answers from retrieved context using the DeepSeek API.
 - Expose retrieval through `POST /search` without a generation-model API key.
