@@ -78,7 +78,7 @@ The evaluator compares vector Top-3 with RRF Top-3, using 10 candidates per chan
 
 These are user-run source-and-evidence-string hit rates, not answer accuracy. The development annotations include manually checked equivalent evidence alternatives; earlier annotation versions and results remain in `docs/experiments.md`. The held-out dataset was frozen before retrieval changes and was not used to tune parameters. Six same-corpus held-out questions do not establish stable improvements or cross-domain generalization.
 
-Hybrid retrieval currently runs only in the evaluator. The browser and `/search`, `/prepare`, `/query` still use vector retrieval. Serving hybrid results with clearly named score fields is the next implementation task.
+The browser and `/search`, `/prepare`, `/query` now share hybrid RRF retrieval. Each channel retrieves 10 candidates with RRF constant 60; requests default to 3 final results. Service results include `rrf_score` (higher ranks first) and `ranks` (one-based positions in each channel's candidate list), rather than vector `score` or BM25 `lexical_score`. A missing channel in `ranks` means the chunk was absent from that channel's Top-10. RRF scores are ranking signals, not answer confidence. `GET /config` exposes the retrieval settings.
 
 Clear both settings before running the original sample evaluations or restoring the default demo:
 
@@ -90,7 +90,7 @@ set "RAG_CHUNKING="
 Restart the service after configuration changes. Evaluation overrides such as `--chunking` may differ from service configuration.
 
 ## Next Steps
-- Integrate the fixed hybrid retrieval strategy into the API with explicit score semantics
+- Verify a generated answer and its citations on the real corpus through the browser
 - Verify a reproducible deployment and representative document coverage
 - Improve the minimal browser interface
 
@@ -142,7 +142,7 @@ Current limitations:
 
 - `POST /search` returns retrieval results without invoking DeepSeek.
 - `POST /prepare` returns the retrieved candidates and final prompt without invoking DeepSeek, so prompt construction can be inspected without an API key.
-- Every result includes `source`, `chunk_id`, `score`, and `chunk`.
+- Every service retrieval result includes `source`, `chunk_id`, `chunk`, `rrf_score`, and `ranks`.
 - `POST /query` returns both `sources` (retrieved candidates) and `citations` (answer labels validated against those candidates).
 - The service indexes multiple local text documents and preserves a source path for every chunk.
 - The embedding index starts without `DEEPSEEK_API_KEY`; the key is only needed when `/query` generates an answer.

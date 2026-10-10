@@ -2,16 +2,18 @@ from app.prompts import build_qa_prompt
 from app.llm_client import LLMClient
 from app.citations import find_valid_citations
 from time import perf_counter
-
+from app.fusion import fuse_rankings
 class RAGPipeline:
     def __init__(self, vector_store, llm_client=None):
         self.vector_store = vector_store
         self.llm_client = llm_client
 
     def retrieve(self, question: str, top_k: int = 3) -> list:
-        results = self.vector_store.search(question, top_k=top_k)
-        return results
-
+        rankings = {
+            "vector": self.vector_store.search(question, top_k=10),
+            "lexical": self.vector_store.search_lexical(question, top_k=10),
+        }
+        return fuse_rankings(rankings, top_k=top_k)
     def prepare(self, question: str, top_k: int = 3) -> dict:
         results = self.retrieve(question, top_k=top_k)
         contexts = [

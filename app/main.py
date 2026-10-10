@@ -85,6 +85,12 @@ def config():
         "chunking": CHUNKING,
         "chunk_size": CHUNK_SIZE,
         "chunk_overlap": CHUNK_OVERLAP,
+        "retrieval": {
+            "strategy": "hybrid_rrf",
+            "candidate_k_per_channel": 10,
+            "rrf_constant": 60,
+            "default_top_k": 3,
+        },
     }
 
 @app.get("/documents")

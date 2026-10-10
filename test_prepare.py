@@ -5,7 +5,8 @@ class FakeVectorStore:
     def __init__(self):
         self.received_question = None
         self.received_top_k = None
-
+        self.received_lexical_question = None
+        self.received_lexical_top_k = None
     def search(self, question: str, top_k: int) -> list[dict]:
         self.received_question = question
         self.received_top_k = top_k
@@ -21,7 +22,10 @@ class FakeVectorStore:
                 "source": "data/rag_operations.txt",
             }
         ]
-
+    def search_lexical(self, question: str, top_k: int) -> list[dict]:
+        self.received_lexical_question = question
+        self.received_lexical_top_k = top_k
+        return []
 class FakeLLMClient:
     def __init__(self):
         self.received_prompt = None
@@ -44,7 +48,16 @@ prepared = pipeline.prepare(
 assert store.received_question == (
     "Why should a retrieval system keep source metadata?"
 )
-assert store.received_top_k == 1
+assert store.received_top_k == 10
+assert store.received_lexical_question == store.received_question
+assert store.received_lexical_top_k == 10
+assert len(prepared["sources"]) == 1
+
+item = prepared["sources"][0]
+assert item["ranks"] == {"vector": 1}
+assert abs(item["rrf_score"] - 1 / 61) < 1e-12
+assert "score" not in item
+assert "lexical_score" not in item
 
 assert prepared["sources"][0]["source"] == "data/rag_operations.txt"
 assert "Source metadata helps users verify" in prepared["prompt"]
