@@ -149,6 +149,7 @@ Current limitations:
 - Manually verified `/search` against `data/sample.txt` using a fixed 150-character chunk index.
 - Verified multi-document retrieval against `data/rag_operations.txt`, including chunk-to-source mapping and mismatched-metadata rejection.
 - `GET /config` exposes the active documents and chunking configuration.
+- `GET /config` also reports the running embedding model's `max_seq_length` and the FAISS index `dimension` under `embedding`.
 - `GET /documents` lists loaded documents, the chunk count for each document, and the total indexed chunk count.
 - When no generation key is configured, `POST /query` returns HTTP 503 with a clear error while retrieval remains available.
 

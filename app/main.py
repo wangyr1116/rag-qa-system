@@ -61,6 +61,8 @@ async def lifespan(app: FastAPI):
         "documents": document_stats,
     }
     app.state.pipeline = RAGPipeline(store)
+    app.state.model = store.model
+    app.state.index = store.index
     print("RAG 初始化完成")
     yield
 
@@ -91,6 +93,10 @@ def config():
             "rrf_constant": 60,
             "default_top_k": 3,
         },
+        "embedding": {
+            "max_seq_length": app.state.model.max_seq_length,
+            "dimension": app.state.index.d,
+        }
     }
 
 @app.get("/documents")

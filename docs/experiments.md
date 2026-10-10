@@ -214,3 +214,8 @@ uv run python observe_distances.py
 - 用户报告通过：从本地仓库克隆到D:\llm-learning\rag-qa-system-repro，uv sync --locked安装依赖，设置真实资料目录和markdown_tokens，按指导清空新窗口生成密钥，8001启动及/documents、/search通过。助手未重新安装依赖或读取环境密钥。
 - 助手实际核实副本HEAD为7eb8057、Git工作区干净，并请求8001/config、/documents、/search：固定两路Top-10/RRF60/default Top-3，6篇127块；HTTPException问题返回18/36/16，首项rrf_score=0.031054405392392875、vector=2/lexical=7，与原服务一致。未调用生成接口或重跑题集。
 - 该结果验证已提交代码在独立目录和新虚拟环境中的启动复现，仍可能共享uv及Embedding缓存，不代表全新电脑、容器或无缓存下载已通过。副本保留供用户复现使用；原目录继续作为学习主目录。
+
+## 2026-10-10：独立修改模型配置展示
+
+- 用户在减少代码支架、仅给需求和验收条件的情况下修改app/main.py：建索引后保存实际model/index对象引用到app.state，/config新增embedding字典，读取model.max_seq_length与index.d，不写死数值、不在请求期加载模型。
+- 用户提供/config成功输出；助手读取Git差异并实际GET确认max_seq_length=256、dimension=384，原配置字段保留，git diff --check通过。未重新生成答案或运行检索评测；本小需求独立完成，不据此认定全面熟练掌握Python。
