@@ -119,6 +119,8 @@ def search(request: QueryRequest):
     return {
         "question": request.question,
         "results": results,
+        "requested_top_k":request.top_k,
+        "returned_count":len(results),
     }
 
 
