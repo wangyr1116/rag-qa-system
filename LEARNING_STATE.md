@@ -73,6 +73,8 @@
 - 2026-10-12生命周期与接口复习：用户正确理解top_k=0会在接口处理前拒绝、每次重建会重复昂贵准备；曾将/prepare缺密钥误判为/query失败，助手已纠正/prepare不需要生成密钥。用户仍需将lifespan位置、pipeline方法、输入输出与请求参数来源串联，本轮给两阶段函数地图和路径/查询/请求体对照，不视为已独立掌握。下一小步为用户仅修改/search返回字典，新增requested_top_k与returned_count，验证一次Top-2请求，用实作检查请求字段、调用参数和结果列表的对应；不新增评测脚本或调用生成API。
 - 用户已独立完成/search新增requested_top_k=request.top_k与returned_count=len(results)，助手读取差异并实际请求8000/search核验Top-2：两个字段均2、实际2条、编号18/36，git diff --check通过，未调用生成。本轮用户误以为lifespan创建app，仍需解释“FastAPI(...)创建应用对象、注册函数引用，启动时框架将app传入lifespan”的先后关系，当前不视为已掌握生命周期。代码与学习记录未提交，根目录main.py保留不动。
 - 2026-10-13用户表示明白并继续；基于两次独立小修改及检索/失败定位问答，助手判断可开始独立Agent，不要求等满巩固期限。lifespan关系仍需后续间隔回忆，不视为全面掌握。后续新增功能主线在D:/llm-learning/support-agent，从get_ticket只读模拟工具开始，模型工具选择尚未实现；持续穿插Python、模型理论及RAG薄弱点。核实RAG HEAD仍8a217d6，本轮/search代码与学习计划/记录尚未提交，用户自行提交。
+- 2026-10-13最新核实/search模块已提交2210cf9，核验时仅根目录main.py未跟踪；git remote -v为空，当前提交仅在本地。用户询问上传GitHub与简历、切会话时机及Agent用途，建议优先整理RAG发布版/简历项目证据，再开独立Agent学习会话，不等两项目完成才发布/投递；已异步询问GitHub主页及简历本地路径，实际上传、简历编辑均未执行。用户希望更细解释代码并穿插Python基础，Agent约定已补充。
+- 用户澄清本轮要更新GitHub个人主页展示，没有简历，账号wangyr1116。助手通过浏览器实际读取主页：已有wangyr1116主页仓库及LTNtorch fork；主页RAG状态过时、Agent仍写学习助手。已准备D:/llm-learning/github-display/profile-README.md与PUBLISH_GUIDE.md，并更新项目README概况、已验证演示/边界和锁定依赖启动命令；diff --check通过。未创建远程仓库、未上传、未修改线上主页，用户自行Git提交/推送。当前下一步由用户创建rag-qa-system远程仓库、上传本地代码，再更新已有主页README并置顶。已有Git历史含学习记录，发布指南已说明。完成后适合新Agent会话。
 
 ## 新会话验收
 应能准确说明当前断点、服务/评测配置差异、指标含义，并提供下一小步；无需读取整段历史。

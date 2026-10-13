@@ -1,6 +1,14 @@
 # RAG QA System
 
-A beginner-friendly RAG project built with FastAPI, sentence-transformers, and FAISS.
+A document-grounded QA demo built with FastAPI, Sentence Transformers, FAISS, BM25, and RRF rank fusion.（基于文档证据的混合检索问答演示）
+
+## Project snapshot（项目概况）
+
+- Corpus: six pinned English FastAPI tutorials with expanded code examples; 127 token-budgeted chunks.（固定版本真实资料与代码示例）
+- Retrieval: vector and BM25 Top-10 per channel, RRF constant 60, final Top-3 by default.（两路候选与名次融合）
+- Held-out evidence hits: vector 3/6, hybrid 4/6 on six frozen same-corpus questions. These are evidence-string hit rates, not answer accuracy or a general improvement guarantee.（小样本指定证据命中率）
+- Verified: a real-corpus browser answer with supporting chunk #18, plus startup from a separate local clone and locked dependencies; model caches may be shared.（单题演示与独立目录复现）
+- Scope: a learning/demo project, not a production service; citation labels are matched to candidates but semantic support is not automatically verified.（功能与验证边界）
 
 ## Current Features
 - Use a browser question-answering page at `/` to view answers and candidate evidence, with loading and error feedback.
@@ -20,7 +28,7 @@ A beginner-friendly RAG project built with FastAPI, sentence-transformers, and F
 Windows CMD, from the project directory (requires uv):
 
 ```bat
-uv sync
+uv sync --locked
 set "DEEPSEEK_API_KEY=your-api-key"
 uv run uvicorn app.main:app --reload
 ```
@@ -48,7 +56,7 @@ The repository includes six official English FastAPI tutorials pinned to commit 
 Windows CMD:
 
 ```bat
-uv sync
+uv sync --locked
 set "RAG_DOCUMENT_DIR=knowledge\fastapi_expanded"
 set "RAG_CHUNKING=markdown_tokens"
 uv run uvicorn app.main:app --reload
@@ -89,10 +97,12 @@ set "RAG_CHUNKING="
 
 Restart the service after configuration changes. Evaluation overrides such as `--chunking` may differ from service configuration.
 
-## Next Steps
-- Verify a generated answer and its citations on the real corpus through the browser
-- Verify a reproducible deployment and representative document coverage
-- Improve the minimal browser interface
+## Verified demo and limitations（已验证演示与限制）
+
+- The browser question `Should I raise or return HTTPException?` produced the correct recommendation to raise, citing chunk #18 whose text directly supports that answer. This is one manually checked example, not a full answer-quality evaluation.
+- A separate clone at the committed hybrid-service version started with `uv sync --locked`; `/documents` reported six documents and 127 chunks, and `/search` returned the same candidate IDs 18/36/16. This does not establish deployment on a new machine without caches.
+- Evidence annotations may omit equivalent supporting text; candidate relevance, answer correctness, and valid citation labels are separate checks. No automated semantic citation verification is implemented.
+- The service currently rebuilds in-memory indexes on startup. Larger corpus coverage, robust generation evaluation, and production deployment remain future work driven by actual needs.
 
 ## Learning Progress
 
